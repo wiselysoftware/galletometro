@@ -12,10 +12,10 @@ window.onload = function () {
                 dataset.coffee.shift();
             }
             dataset.time.push(new_data[0]);
-            dataset.cookie1.push(new_data[1]);
-            dataset.cookie2.push(new_data[2]);
-            dataset.tea.push(new_data[3]);
-            dataset.coffee.push(new_data[4]);
+            dataset.cookie1.push(new_data[3]);
+            dataset.cookie2.push(new_data[4]);
+            dataset.tea.push(new_data[1]);
+            dataset.coffee.push(new_data[2]);
         }
     };
 

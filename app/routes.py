@@ -5,7 +5,18 @@ from app.models import *
 from datetime import datetime
 from app.forms import ContactForm
 
-all_data = []
+
+# Normalizacion y escalamiento de los datos
+def galleta_transform(raw_data):
+    return int(abs((250 * int(raw_data))/130000))
+
+
+def te_transorm(raw_data):
+    return int(abs((int(raw_data) - 1681.3333)/70480.1))
+
+
+def cafe_transform(raw_data):
+    return int(abs((int(raw_data) + 26199.266)/67009.2))
 
 
 @app.before_first_request
@@ -22,18 +33,16 @@ def main():
 
 @app.route('/api/datos', methods=['GET', 'POST'])
 def data_points():
-    # format => [date, dp1,dp2,dp3,dp4]
-    global all_data
     if request.method == 'POST':
         data_gw = request.get_json()
-        if data_gw:
+        if data_gw and 'token' in data_gw:
             datapoints = data_gw['data'].rstrip().split(',')
             new_data_point = DataPoint(
                 date=datetime.utcnow(),
-                cafe_punto=datapoints[0],
-                te_punto=datapoints[1],
-                g1_punto=datapoints[2],
-                g2_punto=datapoints[3]
+                cafe_punto=cafe_transform(datapoints[0]),
+                te_punto=te_transorm(datapoints[1]),
+                g1_punto=galleta_transform(datapoints[2]),
+                g2_punto=galleta_transform(datapoints[3])
             )
             db.session.add(new_data_point)
             db.session.commit()

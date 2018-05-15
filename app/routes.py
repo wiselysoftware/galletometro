@@ -35,7 +35,7 @@ def main():
 def data_points():
     if request.method == 'POST':
         data_gw = request.get_json()
-        if data_gw and 'token' in data_gw:
+        if data_gw:
             datapoints = data_gw['data'].rstrip().split(',')
             new_data_point = DataPoint(
                 date=datetime.utcnow(),

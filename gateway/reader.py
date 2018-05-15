@@ -17,9 +17,9 @@ def serial_daemon():
                 url = 'http://165.227.112.56/api/datos'
                 payload = {'data': serial_data}
                 try:
-                    r = requests.post(url, json=payload, timeout=2)
+                    r = requests.post(url, json=payload, timeout=3)
                     print("mensaje enviado")
-                except requests.exceptions.ConnectionError:
+                except(requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
                     print("error conexion...")
         except(KeyboardInterrupt, SystemExit):
             print('Closing...')

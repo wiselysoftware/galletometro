@@ -1,5 +1,6 @@
 from app import db, app
 from flask import render_template, jsonify, request, redirect, url_for, flash
+from sqlalchemy import desc
 from app.models import *
 from datetime import datetime
 from app.forms import ContactForm
@@ -25,13 +26,23 @@ def data_points():
     global all_data
     if request.method == 'POST':
         data_gw = request.get_json()
-        data = []
         if data_gw:
             datapoints = data_gw['data'].rstrip().split(',')
-            data.append(datetime.utcnow().isoformat())
-            data = data + datapoints
-            all_data.append(data)
-    return jsonify(all_data[-1:])
+            new_data_point = DataPoint(
+                date=datetime.utcnow(),
+                cafe_punto=datapoints[0],
+                te_punto=datapoints[1],
+                g1_punto=datapoints[2],
+                g2_punto=datapoints[3]
+            )
+            db.session.add(new_data_point)
+            db.session.commit()
+            return "OK"
+    last_data_point = DataPoint.query.order_by(desc(DataPoint.date)).first()
+    if last_data_point:
+        return jsonify(last_data_point.return_list_data)
+    else:
+        return "sin datos aun"
 
 
 @app.route('/api/contact', methods=['GET','POST'])

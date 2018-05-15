@@ -150,7 +150,7 @@ window.onload = function () {
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
                 let data = JSON.parse(this.response);
-                parse_data(data[0], dataset);
+                parse_data(data, dataset);
                 myChart.update();
                 liquidChart.update();
             } else {

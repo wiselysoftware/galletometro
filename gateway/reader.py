@@ -14,7 +14,7 @@ def serial_daemon():
             data = s.decode('utf-8')
             if data and data is not '' and data is not '\n' and data is not '\r' and data is not None:
                 serial_data = data.split('*')[1]
-                url = 'http://192.168.0.65:5000/api/datos'
+                url = 'http://165.227.112.56:5000/api/datos'
                 payload = {'data': serial_data}
                 r = requests.post(url, json=payload)
         except(KeyboardInterrupt, SystemExit):
